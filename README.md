@@ -1,4 +1,4 @@
-# Charmed PgBouncer Snap
+# Charmed etcd Snap
 <!-- [![Release to Snap Store](https://github.com/canonical/charmed-pgbouncer-snap/actions/workflows/release.yaml/badge.svg)](https://github.com/canonical/charmed-pgbouncer-snap/actions/workflows/release.yaml) -->
 
 This repository contains the packaging metadata for creating a snap of etcd built from Launchpad.  For more information on snaps, visit [snapcraft.io](https://snapcraft.io/). 
