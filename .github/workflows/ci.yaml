@@ -31,9 +31,10 @@ jobs:
       
       - name: Check etcd service status and run etcdctl and etcdutl
         run: |
-          sudo systemctl status snap.charmed-etcd.etcd.service | grep 'active (running)'
-          charmed-etcd.etcdctl
-          charmed-etcd.etcdutl
+          sudo systemctl status snap.charmed-etcd.daemon.service | grep 'active (running)'
+          charmed-etcd.etcd --version
+          charmed-etcd.etcdctl version
+          charmed-etcd.etcdutl version
       
       - name: Run tests
         run: |
