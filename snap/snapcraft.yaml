@@ -9,12 +9,24 @@ description: |
 grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
 
+environment:
+  SNAP_CURRENT: /snap/charmed-etcd/current
+  SNAP_DATA_CURRENT: /var/snap/charmed-etcd/current
+
 apps:
-  etcd:
+  daemon:
     daemon: simple
     command: bin/etcd
     plugs:
       - network-bind
+    environment:
+      ETCD_CONFIG_FILE: $SNAP_CURRENT/etcd.conf.yml
+
+  etcd:
+    command: bin/etcd
+    plugs:
+      - network-bind
+      - home
   etcdctl:
     command: bin/etcdctl
     plugs:
@@ -36,3 +48,9 @@ parts:
     override-build: |
       make build
       cp -r bin $CRAFT_PART_INSTALL/
+  
+  etcd-conf-file:
+    plugin: dump
+    source: .
+    stage:
+      - etcd.conf.yml
