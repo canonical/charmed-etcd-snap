@@ -20,7 +20,7 @@ apps:
     plugs:
       - network-bind
     environment:
-      ETCD_CONFIG_FILE: $SNAP_CURRENT/etcd.conf.yml
+      ETCD_CONFIG_FILE: $SNAP_DATA/etcd.conf.yml
 
   etcd:
     command: bin/etcd
@@ -53,4 +53,4 @@ parts:
     plugin: dump
     source: .
     stage:
-      - etcd.conf.yml
+      - config/etcd.conf.yml
