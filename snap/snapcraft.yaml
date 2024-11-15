@@ -9,10 +9,6 @@ description: |
 grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
 
-environment:
-  SNAP_CURRENT: /snap/charmed-etcd/current
-  SNAP_DATA_CURRENT: /var/snap/charmed-etcd/current
-
 apps:
   daemon:
     daemon: simple
