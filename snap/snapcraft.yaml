@@ -22,17 +22,14 @@ apps:
     command: bin/etcd
     plugs:
       - network-bind
-      - home
   etcdctl:
     command: bin/etcdctl
     plugs:
       - network-bind
-      - home
   etcdutl:
     command: bin/etcdutl
     plugs:
       - network-bind
-      - home
 
 parts:
   etcd:
