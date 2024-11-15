@@ -44,7 +44,7 @@ parts:
     build-snaps: [go/latest/stable]
     source: https://git.launchpad.net/etcd
     source-type: git
-    source-branch: lp-v3.5.16
+    source-tag: lp-v3.5.16
     override-build: |
       make build
       cp -r bin $CRAFT_PART_INSTALL/
