@@ -42,6 +42,7 @@ jobs:
         run: |
           sudo systemctl status snap.charmed-etcd.daemon.service | grep 'active (running)'
 
+          sleep 5
           VERSION="$(curl -L http://localhost:2379/version)"
           echo "Received answer for version is: ${VERSION}"
           echo "$VERSION" | yq -p=json .etcdserver
