@@ -42,9 +42,16 @@ jobs:
         run: |
           sudo systemctl status snap.charmed-etcd.daemon.service | grep 'active (running)'
 
+          apt install -y net-tools
+          netstat -tnlp  # prints all open ports
+          VERSION="$(curl -L http://localhost:2379/version)"
+          echo "Received answer for version is: ${VERSION}"
+          echo "$VERSION" | yq -p=json .etcdserver
+          nc -z -v localhost 2379
+
           expected_version="$(cat snap/snapcraft.yaml | yq .version)"
 
-          version="$(curl -L http://127.0.0.1:2379/version | yq -p=json .etcdserver)"
+          version="$(curl -L http://localhost:2379/version | yq -p=json .etcdserver)"
 
           if [ "$expected_version" != "$version" ]; then
             echo "Error: etcd Version is ${version}, expected ${expected_version}"
