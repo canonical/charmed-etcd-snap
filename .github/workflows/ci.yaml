@@ -27,13 +27,13 @@ jobs:
 
       - name: Install snap package(s)
         run: |
-          sudo snap install --dangerous ${{ needs.build.outputs.artifact-prefix }}-*.snap
+          sudo snap install --dangerous charmed-etcd*.snap
 
       - name: Check etcd service status and run etcdctl and etcdutl
         run: |
           sudo systemctl status snap.charmed-etcd.etcd.service | grep 'active (running)'
-          charmed-etcd.etcdctl
-          charmed-etcd.etcdutl
+          charmed-etcd.etcdctl version
+          charmed-etcd.etcdutl version
 
       - name: Run tests
         run: |
