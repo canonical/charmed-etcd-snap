@@ -44,10 +44,10 @@ jobs:
 
           expected_version="$(cat snap/snapcraft.yaml | yq .version)"
 
-          version="$(curl -L http://localhost:2379/version | yq -p=json .etcdserver)"
+          version="$(curl -L http://127.0.0.1:2379/version | yq -p=json .etcdserver)"
 
           if [ "$expected_version" != "$version" ]; then
-            echo "Error: etcd Version is ${version}, expected {expected_version}"
+            echo "Error: etcd Version is ${version}, expected ${expected_version}"
             exit 1
           fi
 
