@@ -1,0 +1,49 @@
+name: charmed-etcd # you probably want to 'snapcraft register <name>'
+base: core24 # the base snap is the execution environment for this snap
+version: '3.5.16' # just for humans, typically '1.2+git' or '1.3.2'
+summary: etcd is a distributed reliable key-value store for distributed systems. # 79 char long summary
+description: |
+  etcd is a distributed reliable key-value store for the most critical data of a distributed system.
+  etcd is written in Go and uses the Raft consensus algorithm to manage a highly-available replicated log.
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: strict # use 'strict' once you have the right plugs and slots
+
+apps:
+  daemon:
+    daemon: simple
+    command: bin/etcd
+    plugs:
+      - network-bind
+    environment:
+      ETCD_CONFIG_FILE: $SNAP_DATA/etcd.conf.yml
+
+  etcd:
+    command: bin/etcd
+    plugs:
+      - network-bind
+  etcdctl:
+    command: bin/etcdctl
+    plugs:
+      - network-bind
+  etcdutl:
+    command: bin/etcdutl
+    plugs:
+      - network-bind
+
+parts:
+  etcd:
+    plugin: make
+    build-snaps: [go/latest/stable]
+    source: https://git.launchpad.net/etcd
+    source-type: git
+    source-tag: lp-v3.5.16
+    override-build: |
+      make build
+      cp -r bin $CRAFT_PART_INSTALL/
+  
+  etcd-conf-file:
+    plugin: dump
+    source: .
+    stage:
+      - config/etcd.conf.yml

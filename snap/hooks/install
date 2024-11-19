@@ -1,0 +1,5 @@
+#!/bin/sh -e
+
+# This hook is called when the snap is installed
+# copy the configuration file to the snap's data directory
+cp $SNAP/config/etcd.conf.yml $SNAP_DATA/etcd.conf.yml

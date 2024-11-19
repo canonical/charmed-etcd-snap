@@ -30,5 +30,5 @@ sudo snap install ./charmed-etcd*.snap --devmode
 ## License
 The etcd Snap is free software, distributed under the Apache
 Software License, version 2.0. See
-[LICENSE](https://github.com/canonical/charmed-etcd-snap/blob/main/LICENSE)
+[LICENSE](https://github.com/canonical/charmed-etcd-snap/blob/main/licenses/LICENSE-snap)
 for more information.
