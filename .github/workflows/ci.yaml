@@ -42,7 +42,7 @@ jobs:
         run: |
           sudo systemctl status snap.charmed-etcd.daemon.service | grep 'active (running)'
 
-          apt install -y net-tools
+          sudo apt install -y net-tools
           netstat -tnlp  # prints all open ports
           VERSION="$(curl -L http://localhost:2379/version)"
           echo "Received answer for version is: ${VERSION}"
