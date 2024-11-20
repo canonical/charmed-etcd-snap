@@ -1,5 +1,5 @@
-#!/bin/bash
-# Wrapper script for charmed mongodb applications to be run with restricted privileges
+#!/usr/bin/env bash
+# Wrapper script for charmed etcd to be run with restricted privileges
 
 pushd "${SNAP}" > /dev/null
 

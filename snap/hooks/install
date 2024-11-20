@@ -2,15 +2,15 @@
 
 # This hook is called when the snap is installed
 # copy the configuration file to the snap's data directory
-cp $SNAP/config/etcd.conf.yml $SNAP_DATA/etcd.conf.yml
+cp "${SNAP}"/config/etcd.conf.yml "${SNAP_DATA}"/etcd.conf.yml
 chown -R 584788:584788 "${SNAP_DATA}"/*
 
 # create the data directory
-export DATA="${SNAP_COMMON}"/var/lib/etcd
+DATA="${SNAP_COMMON}"/var/lib/etcd
 mkdir -p "${DATA}"
 
 # If we just created the directory, we set up permissions
-if [ stat -c '%u' "$DATA" == 0 ]; then
+if [ stat -c '%u' "${DATA}" == 0 ]; then
     chmod -R 770 "${SNAP_COMMON}"
     chmod 750 "${DATA}"
 fi
