@@ -4,7 +4,7 @@
 name: 'default'
 
 # Path to the data directory.
-data-dir:
+data-dir: "/var/snap/charmed-etcd/common/var/lib/etcd"
 
 # Path to the dedicated wal directory.
 wal-dir:
