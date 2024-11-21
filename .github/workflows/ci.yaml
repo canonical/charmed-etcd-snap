@@ -34,13 +34,14 @@ jobs:
           pattern: ${{ needs.build.outputs.artifact-prefix }}-*
           merge-multiple: true
 
-      - name: Install snap package(s)
+      - name: Install snap package(s) and start the etcd service
         run: |
           sudo snap install --dangerous charmed-etcd*.snap
+          sudo snap start charmed-etcd.etcd
 
       - name: Check etcd service status and run etcdctl and etcdutl
         run: |
-          sudo systemctl status snap.charmed-etcd.daemon.service | grep 'active (running)'
+          sudo systemctl status snap.charmed-etcd.etcd.service | grep 'active (running)'
 
           # Wait for etcd to start and listen on port 2379
           sleep 5
