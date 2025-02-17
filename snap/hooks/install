@@ -11,6 +11,5 @@ if [ ! -d "${DATA}" ]; then
   mkdir "${DATA}"
   chmod -R 770 "${SNAP_COMMON}"
   chmod 750 "${DATA}"
+  chown -R 584788:584788 "${SNAP_COMMON}"/*
 fi
-
-chown -R 584788:584788 "${SNAP_COMMON}"/*
