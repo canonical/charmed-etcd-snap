@@ -14,6 +14,13 @@ platforms:
 system-usernames:
   snap_daemon: shared
 
+hooks:
+  install:
+    plugs:
+      - network
+      - network-bind
+      - mount-observe
+
 apps:
   etcd:
     command: start-etcd.sh
@@ -22,7 +29,9 @@ apps:
     restart-condition: always
     restart-delay: 20s
     plugs:
+      - network
       - network-bind
+      - mount-observe
     environment:
       ETCD_CONFIG_FILE: $SNAP_DATA/etcd.conf.yml
 
