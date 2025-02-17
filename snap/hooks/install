@@ -5,11 +5,9 @@
 cp "${SNAP}"/config/etcd.conf.yml "${SNAP_DATA}"/etcd.conf.yml
 chown -R 584788:584788 "${SNAP_DATA}"/*
 
-# create the data directory only if not exists
+# create the data directory
 DATA="${SNAP_COMMON}"/var/lib/etcd
-if [ ! -d "${DATA}" ]; then
-  mkdir -p "${DATA}"
-fi
+mkdir -p "${DATA}"
 
 # If we just created the directory, we set up permissions
 if [ stat -c '%u' "${DATA}" == 0 ]; then

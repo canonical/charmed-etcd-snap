@@ -17,7 +17,7 @@ cd charmed-etcd-snap
 ```
 ### Installing and Configuring Prerequisites
 ```bash
-sudo snap install snapcraft --classic
+sudo snap install snapcraft
 sudo snap install lxd
 sudo lxd init --auto
 ```
