@@ -78,5 +78,3 @@ jobs:
       - name: Run Performance checks
         run: |
           charmed-etcd.etcdctl check perf | grep 'PASS'
-
-      - name:
