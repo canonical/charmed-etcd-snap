@@ -14,6 +14,19 @@ jobs:
     name: Build snap
     uses: canonical/data-platform-workflows/.github/workflows/build_snap.yaml@v29.0.5
 
+  release:
+    name: Release snap
+    needs:
+      - build
+    uses: canonical/data-platform-workflows/.github/workflows/release_snap.yaml@v29.0.5
+    with:
+      channel: 3.5/edge_test
+      artifact-prefix: ${{ needs.build.outputs.artifact-prefix }}
+    secrets:
+      snap-store-token: ${{ secrets.SNAP_STORE_TOKEN }}
+    permissions:
+      contents: write # Needed to create GitHub release
+
   test:
     name: Test snap
     runs-on: ubuntu-latest
@@ -65,3 +78,5 @@ jobs:
       - name: Run Performance checks
         run: |
           charmed-etcd.etcdctl check perf | grep 'PASS'
+
+      - name:
