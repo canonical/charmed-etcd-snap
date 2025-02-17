@@ -15,4 +15,4 @@ if [ stat -c '%u' "${DATA}" == 0 ]; then
     chmod 750 "${DATA}"
 fi
 
-chown -R 584788:584788 "${SNAP_COMMON}"/*
+chown -R 584788:root "${SNAP_COMMON}"/*
