@@ -1,5 +1,5 @@
 # Charmed etcd Snap
-<!-- [![Release to Snap Store](https://github.com/canonical/charmed-pgbouncer-snap/actions/workflows/release.yaml/badge.svg)](https://github.com/canonical/charmed-pgbouncer-snap/actions/workflows/release.yaml) -->
+<!-- [![Release to Snap Store](https://github.com/canonical/charmed-etcd-snap/actions/workflows/release.yaml/badge.svg)](https://github.com/canonical/charmed-etcd-snap/actions/workflows/release.yaml) -->
 
 This repository contains the packaging metadata for creating a snap of etcd built from Launchpad.  For more information on snaps, visit [snapcraft.io](https://snapcraft.io/). 
 
@@ -7,7 +7,7 @@ This repository contains the packaging metadata for creating a snap of etcd buil
 The snap can be installed directly from the Stap Store.  Follow the link below for more information.
 <br>
 
-[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/charmed-pgbouncer) -->
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/charmed-etcd) -->
 
 ## Building the Snap
 ### Clone Repository
