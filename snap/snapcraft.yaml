@@ -37,6 +37,17 @@ apps:
     plugs:
       - network-bind
 
+  benchmark:
+    command: drop_priv.sh benchmark
+    plugs:
+      - network-bind
+
+  etcd-dump-logs:
+    command: drop_priv.sh etcd-dump-logs
+
+  etcd-dump-metrics:
+    command: drop_priv.sh etcd-dump-metrics
+
 parts:
   etcd:
     plugin: make
@@ -49,6 +60,12 @@ parts:
     override-build: |
       make build
       cp -r bin $CRAFT_PART_INSTALL/
+      
+      # install tools
+      export GOBIN="$CRAFT_PART_INSTALL/bin"  
+      go install -v ./tools/benchmark
+      go install -v ./tools/etcd-dump-logs
+      go install -v ./tools/etcd-dump-metrics
 
   etcd-conf-file:
     plugin: dump
