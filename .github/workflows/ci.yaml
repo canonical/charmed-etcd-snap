@@ -39,7 +39,7 @@ jobs:
           sudo snap install --dangerous charmed-etcd*.snap
           sudo snap start charmed-etcd.etcd
 
-      - name: Check etcd service status and run etcdctl and etcdutl
+      - name: Check etcd service status and run etcdctl, etcdutl and tools
         run: |
           sudo systemctl status snap.charmed-etcd.etcd.service | grep 'active (running)'
 
@@ -55,6 +55,9 @@ jobs:
 
           charmed-etcd.etcdctl version
           charmed-etcd.etcdutl version
+          charmed-etcd.benchmark help
+          charmed-etcd.etcd-dump-log --help
+          charmed-etcd.etcd-dump-metrics --help
 
       - name: Run tests
         run: |
