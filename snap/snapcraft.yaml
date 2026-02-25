@@ -48,6 +48,9 @@ apps:
   etcd-dump-metrics:
     command: drop_priv.sh etcd-dump-metrics
 
+  rw-heatmaps:
+    command: drop_priv.sh rw-heatmaps
+
 parts:
   etcd:
     plugin: make
@@ -66,6 +69,8 @@ parts:
       go install -v ./tools/benchmark
       go install -v ./tools/etcd-dump-logs
       go install -v ./tools/etcd-dump-metrics
+      cd tools/rw-heatmaps
+      go build -o $CRAFT_PART_INSTALL/bin/rw-heatmaps
 
   etcd-conf-file:
     plugin: dump

@@ -56,8 +56,9 @@ jobs:
           charmed-etcd.etcdctl version
           charmed-etcd.etcdutl version
           charmed-etcd.benchmark help
-          charmed-etcd.etcd-dump-log --help
+          charmed-etcd.etcd-dump-logs --help
           charmed-etcd.etcd-dump-metrics --help
+          charmed-etcd.rw-heatmaps --help
 
       - name: Run tests
         run: |
