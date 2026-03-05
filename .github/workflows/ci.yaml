@@ -55,10 +55,25 @@ jobs:
 
           charmed-etcd.etcdctl version
           charmed-etcd.etcdutl version
-          charmed-etcd.benchmark help
-          charmed-etcd.etcd-dump-logs --help
-          charmed-etcd.etcd-dump-metrics --help
-          charmed-etcd.rw-heatmaps --help
+          
+          charmed-etcd.benchmark txn-mixed --endpoints http://localhost:2379 --total 20 | grep -E 'Total Read Ops|Total Write Ops|Requests/sec'
+          
+          sudo charmed-etcd.etcd-dump-logs /var/snap/charmed-etcd/common/var/lib/etcd/ | grep -E 'WAL metadata|WAL entries'
+          
+          charmed-etcd.etcd-dump-metrics --addr http://localhost:2379/metrics | grep -E 'etcd_server_version|etcd_cluster_version'
+          
+          RATIO_LIST="1/1" \
+          VALUE_SIZE_POWER_RANGE="8 8" \
+          CONN_CLI_COUNT_POWER_RANGE="1 1" \
+          REPEAT_COUNT=1 \
+          RUN_COUNT=100 \
+          charmed-etcd.rw-benchmark
+          
+          mv result-*.csv ~/snap/charmed-etcd/common/
+          
+          charmed-etcd.rw-heatmaps ~/snap/charmed-etcd/common/result-*.csv -o ~/snap/charmed-etcd/common/heatmap-test -t test-run
+          test -f ~/snap/charmed-etcd/common/heatmap-test_read.jpg
+          test -f ~/snap/charmed-etcd/common/heatmap-test_write.jpg
 
       - name: Run tests
         run: |
