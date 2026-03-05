@@ -81,12 +81,12 @@ jobs:
           
           printf '\nTesting rw-heatmaps...\n'
       
-          CSV_FILE=$(ls -t result-*.csv | head -n1)
+          CSV_FILE=$(ls -t ~/snap/charmed-etcd/common/result-*.csv | head -n1)
           echo "Using CSV file: $CSV_FILE"
           
-          charmed-etcd.rw-heatmaps "$CSV_FILE" -o heatmap-test -t test-run
-          test -f heatmap-test_read.jpg
-          test -f heatmap-test_write.jpg
+          charmed-etcd.rw-heatmaps "$CSV_FILE" -o ~/snap/charmed-etcd/common/heatmap-test -t test-run
+          test -f ~/snap/charmed-etcd/common/heatmap-test_read.jpg
+          test -f ~/snap/charmed-etcd/common/heatmap-test_write.jpg
 
       - name: Run tests
         run: |
