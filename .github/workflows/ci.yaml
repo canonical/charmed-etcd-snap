@@ -76,9 +76,15 @@ jobs:
           RUN_COUNT=100 \
           charmed-etcd.rw-benchmark
           
+          printf '\nChecking for files\n'
+          ls -lah ~/snap/charmed-etcd/common
+          
           printf '\nTesting rw-heatmaps...\n'
       
-          charmed-etcd.rw-heatmaps result-*.csv -o heatmap-test -t test-run
+          CSV_FILE=$(ls -t result-*.csv | head -n1)
+          echo "Using CSV file: $CSV_FILE"
+          
+          charmed-etcd.rw-heatmaps "$CSV_FILE" -o heatmap-test -t test-run
           test -f heatmap-test_read.jpg
           test -f heatmap-test_write.jpg
 
