@@ -39,7 +39,7 @@ jobs:
           sudo snap install --dangerous charmed-etcd*.snap
           sudo snap start charmed-etcd.etcd
 
-      - name: Check etcd service status and run etcdctl and etcdutl
+      - name: Check etcd service status and run etcdctl, etcdutl and tools
         run: |
           sudo systemctl status snap.charmed-etcd.etcd.service | grep 'active (running)'
 
@@ -55,6 +55,38 @@ jobs:
 
           charmed-etcd.etcdctl version
           charmed-etcd.etcdutl version
+          
+          echo "\nTesting benchmark...\n"
+          charmed-etcd.benchmark txn-mixed --endpoints http://localhost:2379 --total 20 | grep -E 'Total Read Ops|Total Write Ops|Requests/sec'
+          
+          echo "\nTesting etcd-dump-logs...\n"
+          sudo charmed-etcd.etcd-dump-logs /var/snap/charmed-etcd/common/var/lib/etcd/ | grep -E 'WAL metadata|WAL entries'
+          
+          echo "\nTesting etcd-dump-metrics...\n"
+          charmed-etcd.etcd-dump-metrics --addr http://localhost:2379/metrics | grep -E 'etcd_server_version|etcd_cluster_version'
+          
+          echo "\nTesting rw-benchmark...\n"
+          
+          cd ~/snap/charmed-etcd/common/
+          
+          RATIO_LIST="1/1" \
+          VALUE_SIZE_POWER_RANGE="8 8" \
+          CONN_CLI_COUNT_POWER_RANGE="1 1" \
+          REPEAT_COUNT=1 \
+          RUN_COUNT=100 \
+          charmed-etcd.rw-benchmark
+          
+          echo "\nChecking for files\n"
+          ls -lah ~/snap/charmed-etcd/common
+          
+          echo "\nTesting rw-heatmaps...\n"
+      
+          CSV_FILE=$(ls -t ~/snap/charmed-etcd/common/result-*.csv | head -n1)
+          echo "Using CSV file: $CSV_FILE"
+          
+          charmed-etcd.rw-heatmaps "$CSV_FILE" -o ~/snap/charmed-etcd/common/heatmap-test -t test-run
+          test -f ~/snap/charmed-etcd/common/heatmap-test_read.jpg
+          test -f ~/snap/charmed-etcd/common/heatmap-test_write.jpg
 
       - name: Run tests
         run: |
