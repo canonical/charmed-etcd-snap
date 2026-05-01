@@ -75,7 +75,19 @@ parts:
     source: https://git.launchpad.net/etcd
     source-type: git
     source-tag: lp-v3.6.10
+    # TODO remove fork workaround once merged to upstream
     override-build: |
+      # ------ Replace txn-mixed for now from fork --------------
+      mkdir fork
+      cd fork
+      git clone https://github.com/Soundarya03/etcd
+      cd ..
+      
+      rm tools/benchmark/cmd/txn_mixed.go
+      mv fork/etcd/tools/benchmark/cmd/txn_mixed.go tools/benchmark/cmd/
+      rm -rf fork
+      # ---------------------  
+      
       make build
       cp -r bin $CRAFT_PART_INSTALL/
       
