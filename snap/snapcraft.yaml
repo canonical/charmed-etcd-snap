@@ -75,19 +75,11 @@ parts:
     source: https://git.launchpad.net/etcd
     source-type: git
     source-tag: lp-v3.6.11
-    # TODO remove fork workaround once merged to upstream
+    # TODO remove patch workaround once merged to upstream
+    override-pull: |
+      craftctl default
+      cp $CRAFT_PROJECT_DIR/snap/upstream-patch/txn_mixed.go $CRAFT_PART_SRC/tools/benchmark/cmd/txn_mixed.go
     override-build: |
-      # ------ Replace txn-mixed for now from fork --------------
-      mkdir fork
-      cd fork
-      git clone --branch feat/benchmark-tool-v3.6.10 --single-branch https://github.com/Soundarya03/etcd
-      cd ..
-      
-      rm tools/benchmark/cmd/txn_mixed.go
-      mv fork/etcd/tools/benchmark/cmd/txn_mixed.go tools/benchmark/cmd/
-      rm -rf fork
-      # ---------------------  
-      
       make build
       cp -r bin $CRAFT_PART_INSTALL/
       
