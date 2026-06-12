@@ -24,6 +24,7 @@ import (
 	"os"
 	"os/signal"
 	"sort"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"syscall"
@@ -51,6 +52,7 @@ var (
 	mixedTxnReadWriteRatio float64
 	mixedTxnRangeLimit     int64
 	mixedTxnEndKey         string
+	mixedTxnPrefix         string
 	mixedTxnReportInterval int
 
 	writeOpsTotal uint64
@@ -66,6 +68,7 @@ func init() {
 	mixedTxnCmd.Flags().StringVar(&mixedTxnEndKey, "end-key", "",
 		"Read operation range end key. By default, we do full range query with the default limit of 1000.")
 	mixedTxnCmd.Flags().Int64Var(&mixedTxnRangeLimit, "limit", 1000, "Read operation range result limit")
+	mixedTxnCmd.Flags().StringVar(&mixedTxnPrefix, "prefix", "", "Prefix for txn-mixed read and write keys")
 	mixedTxnCmd.Flags().IntVar(&keySpaceSize, "key-space-size", 1, "Maximum possible keys")
 	mixedTxnCmd.Flags().StringVar(&rangeConsistency, "consistency", "l", "Linearizable(l) or Serializable(s)")
 	mixedTxnCmd.Flags().Float64Var(&mixedTxnReadWriteRatio, "rw-ratio", 1, "Read/write ops ratio")
@@ -79,10 +82,6 @@ type request struct {
 
 type liveStats struct {
 	mutex sync.Mutex
-
-	// full history
-	readLats  []float64
-	writeLats []float64
 
 	// interval window (reset every tick)
 	intervalReadLats  []float64
@@ -104,10 +103,8 @@ func (ls *liveStats) add(isWrite bool, dur time.Duration) {
 	defer ls.mutex.Unlock()
 
 	if isWrite {
-		ls.writeLats = append(ls.writeLats, sec)
 		ls.intervalWriteLats = append(ls.intervalWriteLats, sec)
 	} else {
-		ls.readLats = append(ls.readLats, sec)
 		ls.intervalReadLats = append(ls.intervalReadLats, sec)
 	}
 }
@@ -331,6 +328,14 @@ func mixedTxnFunc(cmd *cobra.Command, _ []string) {
 
 	go func() {
 		defer close(requests)
+		hasPrefix := mixedTxnPrefix != ""
+		normalizedPrefix := strings.TrimRight(mixedTxnPrefix, "/")
+		readKey := ""
+		writeKeyPrefix := ""
+		if hasPrefix {
+			readKey = normalizedPrefix + "/"
+			writeKeyPrefix = normalizedPrefix + "/"
+		}
 		for i := 0; i < mixedTxnTotal; i++ {
 			select {
 			case <-ctx.Done():
@@ -344,12 +349,16 @@ func mixedTxnFunc(cmd *cobra.Command, _ []string) {
 					opts = append(opts, v3.WithSerializable())
 				}
 				opts = append(opts, v3.WithPrefix(), v3.WithLimit(mixedTxnRangeLimit))
-				req.op = v3.OpGet("", opts...)
+				req.op = v3.OpGet(readKey, opts...)
 				req.isWrite = false
 				atomic.AddUint64(&readOpsTotal, 1)
 			} else {
 				binary.PutVarint(k, int64(i%keySpaceSize))
-				req.op = v3.OpPut(string(k), v)
+				key := string(k)
+				if hasPrefix {
+					key = writeKeyPrefix + key
+				}
+				req.op = v3.OpPut(key, v)
 				req.isWrite = true
 				atomic.AddUint64(&writeOpsTotal, 1)
 			}
