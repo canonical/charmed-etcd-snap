@@ -57,7 +57,7 @@ jobs:
           charmed-etcd.etcdutl version
           
           echo "\nTesting benchmark...\n"
-          charmed-etcd.benchmark txn-mixed --endpoints http://localhost:2379 --total 20 --report-interval -1 | grep -E 'Total Read Ops|Total Write Ops|Requests/sec'
+          charmed-etcd.benchmark txn-mixed --endpoints http://localhost:2379 --total 20 | grep -E 'Total Read Ops|Total Write Ops|Requests/sec'
           
           echo "\nTesting etcd-dump-logs...\n"
           sudo charmed-etcd.etcd-dump-logs /var/snap/charmed-etcd/common/var/lib/etcd/ | grep -E 'WAL metadata|WAL entries'
