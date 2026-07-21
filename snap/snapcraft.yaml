@@ -75,6 +75,10 @@ parts:
     source: https://git.launchpad.net/etcd
     source-type: git
     source-tag: lp-v3.6.13
+    # TODO remove patch workaround once merged to upstream
+    override-pull: |
+      craftctl default
+      cp $CRAFT_PROJECT_DIR/snap/upstream-patch/txn_mixed.go $CRAFT_PART_SRC/tools/benchmark/cmd/txn_mixed.go
     override-build: |
       make build
       cp -r bin $CRAFT_PART_INSTALL/
