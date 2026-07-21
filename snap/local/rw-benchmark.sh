@@ -49,7 +49,6 @@ run_benchmark() {
     --rw-ratio "${ratio}" \
     --limit "${RANGE_RESULT_LIMIT}" \
     --val-size "${value_size}" \
-    --report-interval -1 \
     2>/dev/null | grep "Requests/sec" | awk '{print $2}'
 }
 
